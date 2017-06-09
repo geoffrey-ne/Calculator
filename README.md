@@ -7,3 +7,6 @@ An IOS application.
 
 ## 适用范围
 - IOS系统：IPAD 或者 IPHONE, 自适应布局。
+
+## 说明
+- 主要根据斯坦福公开课内容，学习IOS项目开发、xcode使用及swift语言的使用，属于练手项目。主要功能是实现一个计算器，MVC分层，自适应布局。
