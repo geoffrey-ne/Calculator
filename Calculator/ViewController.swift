@@ -12,11 +12,8 @@ class ViewController: UIViewController {
 
     @IBOutlet weak var display: UILabel!
     
-    var isInput: Bool = false;
+    var isInput = false
     
-    var myOperator: String = ""
-    
-    var firstNumber: Int32 = 0
     
     @IBAction func appendDigit(_ sender: UIButton) {
         let digit = sender.currentTitle!
@@ -28,20 +25,56 @@ class ViewController: UIViewController {
         }
     }
     
+    var operandStack = Array<Double>()
+    
+    @IBAction func enter() {
+        operandStack.append(displayValue)
+        isInput = false
+        print("operandStack = \(operandStack)")
+    }
+    
+    var displayValue : Double {
+        get {
+            return Double(display.text!)!
+        }
+        set {
+            display.text = "\(newValue)"
+            isInput = false
+        }
+    }
+    
     @IBAction func clear(_ sender: UIButton) {
         display.text = "0"
+        operandStack.removeAll()
         isInput = false
     }
     
-    @IBAction func setOperator(_ sender: UIButton) {
-        myOperator = sender.currentTitle!
-        firstNumber = Int32(display.text!)!
+    @IBAction func operate(_ sender: UIButton) {
+        let operation = sender.currentTitle!
+        if isInput {
+            enter()
+        }
+        switch operation {
+        case "×" : performOperation() { $0 * $1 }
+        case "÷" : performOperation() { $1 / $0 }
+        case "+" : performOperation() { $0 + $1 }
+        case "-" : performOperation() { $1 - $0 }
+            
+        default:
+            break
+        }
     }
     
-    @IBAction func calculation(_ sender: UIButton) {
-//        let secondNumber = Int32(display.text!)!
-//        display.text = String(firstNumber + secondNumber)!
+    func performOperation(operation: (Double, Double) -> Double) {
+        if operandStack.count >= 2 {
+            displayValue = operation(operandStack.removeLast(), operandStack.removeLast())
+            enter()
+        }
     }
+    
+    
+    
+    
     
     
 }
